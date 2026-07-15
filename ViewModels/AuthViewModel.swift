@@ -7,7 +7,8 @@
 // ===========================================================
 //  Purpose:
 //  Connects Firebase Authentication with SwiftUI views.
-//  Manages login, registration, logout, and user session state.
+//  Manages login, registration, logout,
+//  and user authentication state.
 // ===========================================================
 //  Learning Outcomes:
 //  ✓ ObservableObject
@@ -16,7 +17,6 @@
 //  ✓ MVVM Pattern
 //  ✓ Async/Await
 //  ✓ Error Handling
-//  ✓ Session Persistence
 // ===========================================================
 
 
@@ -31,21 +31,16 @@ class AuthViewModel: ObservableObject {
     
     
     // -------------------------------------------------------
-    // Stores the current Firebase user.
+    // Stores current Firebase user.
     //
-    // Nil means the user is logged out.
-    //
-    // Used by ContentView to decide whether to show:
-    // Login screen or Recipe application.
+    // Nil means user is logged out.
     // -------------------------------------------------------
     
     @Published var user: User?
     
     
     // -------------------------------------------------------
-    // Stores authentication error messages.
-    //
-    // Displayed in LoginView and RegisterView.
+    // Stores Firebase error messages.
     // -------------------------------------------------------
     
     @Published var errorMessage: String = ""
@@ -53,8 +48,6 @@ class AuthViewModel: ObservableObject {
     
     // -------------------------------------------------------
     // Controls loading indicator.
-    //
-    // True while Firebase request is running.
     // -------------------------------------------------------
     
     @Published var isLoading: Bool = false
@@ -62,38 +55,35 @@ class AuthViewModel: ObservableObject {
     
     // -------------------------------------------------------
     // Firebase authentication service.
-    //
-    // Handles communication with Firebase Auth.
     // -------------------------------------------------------
     
     private let authService = AuthService()
     
     
     
-    // -------------------------------------------------------
-    // Initializes ViewModel.
+    // =======================================================
+    // Initialize ViewModel
     //
-    // Checks if a Firebase user session already exists.
-    //
-    // If user is already logged in:
-    // → Opens Recipe Finder directly.
-    //
-    // If no user exists:
-    // → Shows Login/Register screen.
-    // -------------------------------------------------------
+    // Testing mode:
+    // Application always starts at Login/Register screen.
+    // =======================================================
     
     init() {
         
         
-        self.user = authService.currentUser
+        // -------------------------------------------------------
+        // Force logged-out state when app starts.
+        // -------------------------------------------------------
+        
+        self.user = nil
     }
     
     
     
     // =======================================================
-    // Register New User
+    // Register User
     //
-    // Creates a Firebase account using email/password.
+    // Creates a new Firebase account.
     // =======================================================
     
     func register(
@@ -120,7 +110,9 @@ class AuthViewModel: ObservableObject {
                 
                 
                 // Updates user after successful registration.
-                user = authService.currentUser
+                user =
+                Auth.auth().currentUser
+                
                 
                 isLoading = false
                 
@@ -128,7 +120,6 @@ class AuthViewModel: ObservableObject {
             } catch {
                 
                 
-                // Stores Firebase error message.
                 errorMessage =
                 error.localizedDescription
                 
@@ -140,9 +131,9 @@ class AuthViewModel: ObservableObject {
     
     
     // =======================================================
-    // Login Existing User
+    // Login User
     //
-    // Authenticates user with Firebase.
+    // Signs in existing Firebase user.
     // =======================================================
     
     func login(
@@ -168,8 +159,10 @@ class AuthViewModel: ObservableObject {
                 )
                 
                 
-                // Updates application state after login.
-                user = authService.currentUser
+                // Updates application after login.
+                user =
+                Auth.auth().currentUser
+                
                 
                 isLoading = false
                 
@@ -177,7 +170,6 @@ class AuthViewModel: ObservableObject {
             } catch {
                 
                 
-                // Stores Firebase login error.
                 errorMessage =
                 error.localizedDescription
                 
@@ -191,7 +183,7 @@ class AuthViewModel: ObservableObject {
     // =======================================================
     // Logout User
     //
-    // Removes Firebase authentication session.
+    // Removes Firebase session.
     // =======================================================
     
     func logout() {
@@ -210,7 +202,6 @@ class AuthViewModel: ObservableObject {
         } catch {
             
             
-            // Stores logout error.
             errorMessage =
             error.localizedDescription
         }

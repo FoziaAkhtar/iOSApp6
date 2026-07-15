@@ -6,29 +6,54 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Represents a user's favorite recipe.
-//  This model will later be stored using Firebase Firestore.
+//  Represents a saved favorite recipe.
+//
+//  This model is used to:
+//  • Display favorite recipes in FavoritesView
+//  • Store favorite recipes in Firestore
+//  • Retrieve saved recipes for the logged-in user
 // ===========================================================
 //  Learning Outcomes:
-//  ✓ Firebase Firestore Preparation
-//  ✓ Codable Data Storage
+//  ✓ Data Modeling
+//  ✓ Identifiable Protocol
+//  ✓ Codable Protocol
+//  ✓ Firebase Firestore Storage
+//  ✓ MVVM Data Layer
 // ===========================================================
 
 
 import Foundation
 
 
+
 struct FavoriteMeal: Identifiable, Codable {
     
-    // Firestore document ID.
+    
+    // -------------------------------------------------------
+    // Unique recipe identifier.
+    //
+    // Used as:
+    // • SwiftUI List identifier
+    // • Firestore document ID
+    // -------------------------------------------------------
+    
     var id: String
     
-    // Recipe ID from API.
-    var mealID: String
     
-    // Recipe name.
+    // -------------------------------------------------------
+    // Recipe display name.
+    //
+    // Appears in Favorites list.
+    // -------------------------------------------------------
+    
     var name: String
     
-    // Recipe image.
-    var imageURL: String
+    
+    // -------------------------------------------------------
+    // Recipe image URL.
+    //
+    // Used by AsyncImage to display recipe picture.
+    // -------------------------------------------------------
+    
+    var image: String
 }

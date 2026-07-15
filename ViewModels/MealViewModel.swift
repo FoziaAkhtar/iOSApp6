@@ -6,72 +6,123 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Manages recipe data between API service and SwiftUI views.
-//  Handles loading, searching, and error states.
+//  Acts as the bridge between the API service
+//  and the SwiftUI views.
+//
+//  Responsible for:
+//  • Loading recipes
+//  • Searching recipes
+//  • Managing loading state
+//  • Displaying error messages
 // ===========================================================
 //  Learning Outcomes:
 //  ✓ MVVM Architecture
 //  ✓ ObservableObject
-//  ✓ @Published State Management
+//  ✓ @Published
 //  ✓ Async/Await
-//  ✓ API Searching
+//  ✓ API Integration
 //  ✓ Error Handling
 // ===========================================================
 
-
 import Foundation
 import Combine
+
 
 
 @MainActor
 class MealViewModel: ObservableObject {
     
     
-    // Stores recipes returned from API.
+    // -------------------------------------------------------
+    // Stores recipes returned from TheMealDB API.
+    //
+    // MealListView automatically refreshes whenever
+    // this array changes.
+    // -------------------------------------------------------
+    
     @Published var meals: [Meal] = []
     
     
+    // -------------------------------------------------------
     // Controls loading indicator.
-    @Published var isLoading: Bool = false
+    //
+    // True while recipes are downloading.
+    // -------------------------------------------------------
+    
+    @Published var isLoading = false
     
     
+    // -------------------------------------------------------
     // Stores error messages.
-    @Published var errorMessage: String = ""
+    //
+    // Displayed when an API request fails.
+    // -------------------------------------------------------
+    
+    @Published var errorMessage = ""
     
     
-    // Stores current search text.
-    @Published var searchText: String = ""
+    // -------------------------------------------------------
+    // Stores the user's search text.
+    //
+    // Bound to SwiftUI Search Bar.
+    // -------------------------------------------------------
+    
+    @Published var searchText = ""
     
     
-    // API service.
+    // -------------------------------------------------------
+    // API Service.
+    //
+    // Handles communication with TheMealDB API.
+    // -------------------------------------------------------
+    
     private let mealService = MealService()
+    
+    
+    
+    // =======================================================
+    // Initialize ViewModel
+    //
+    // Loads default recipes when created.
+    // =======================================================
+    
+    init() {
+        
+        fetchMeals()
+    }
     
     
     
     // =======================================================
     // Fetch Meals
     //
-    // Retrieves recipes from TheMealDB API.
+    // Downloads recipes from TheMealDB API.
     //
     // Parameter:
-    // searchTerm - Recipe keyword
+    // searchTerm
+    //
+    // Default value:
+    // chicken
     // =======================================================
     
-    func fetchMeals(searchTerm: String = "chicken") {
+    func fetchMeals(
+        searchTerm: String = "chicken"
+    ) {
         
         
         Task {
             
             
+            isLoading = true
+            
+            errorMessage = ""
+            
+            
             do {
                 
                 
-                isLoading = true
-                
-                errorMessage = ""
-                
-                
-                let results = try await mealService.fetchMeals(
+                let results =
+                try await mealService.fetchMeals(
                     searchTerm: searchTerm
                 )
                 
@@ -79,18 +130,18 @@ class MealViewModel: ObservableObject {
                 meals = results
                 
                 
-                isLoading = false
-                
-                
             } catch {
                 
                 
+                meals = []
+                
+                
                 errorMessage =
-                "Unable to load recipes."
-                
-                
-                isLoading = false
+                "Unable to load recipes. Please try again."
             }
+            
+            
+            isLoading = false
         }
     }
     
@@ -99,25 +150,51 @@ class MealViewModel: ObservableObject {
     // =======================================================
     // Search Recipes
     //
-    // Called when user enters a search term.
+    // Called whenever the user searches.
+    //
+    // Empty search:
+    // Loads default recipes.
+    //
+    // Otherwise:
+    // Searches entered keyword.
     // =======================================================
     
     func searchMeals() {
         
         
-        let keyword = searchText.trimmingCharacters(
-            in: .whitespacesAndNewlines
-        )
+        let keyword =
+        searchText
+            .trimmingCharacters(
+                in: .whitespacesAndNewlines
+            )
         
         
-        // If search is empty, reload default recipes.
         if keyword.isEmpty {
+            
             
             fetchMeals()
             
+            
         } else {
             
-            fetchMeals(searchTerm: keyword)
+            
+            fetchMeals(
+                searchTerm: keyword
+            )
         }
+    }
+    
+    
+    
+    // =======================================================
+    // Refresh Recipes
+    //
+    // Used by Pull-To-Refresh.
+    // =======================================================
+    
+    func refreshMeals() {
+        
+        
+        searchMeals()
     }
 }

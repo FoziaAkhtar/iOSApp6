@@ -6,44 +6,163 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Main recipe screen after successful login.
-//  Includes logout option.
+//  Main application screen after successful login.
+//
+//  Provides:
+//  • Recipe browsing
+//  • Favorite recipes
+//  • User logout
+// ===========================================================
+//  Learning Outcomes:
+//  ✓ SwiftUI TabView
+//  ✓ NavigationStack
+//  ✓ Toolbar Actions
+//  ✓ EnvironmentObject
+//  ✓ Firebase Authentication
 // ===========================================================
 
 
 import SwiftUI
 
 
+
 struct HomeView: View {
     
     
+    // -------------------------------------------------------
+    // Authentication ViewModel.
+    //
+    // Controls Firebase logout.
+    // -------------------------------------------------------
+    
     @EnvironmentObject var authViewModel: AuthViewModel
+    
+    
+    
+    // -------------------------------------------------------
+    // Controls selected tab.
+    //
+    // 0 = Recipes
+    // 1 = Favorites
+    // -------------------------------------------------------
+    
+    @State private var selectedTab = 0
+    
     
     
     var body: some View {
         
         
-        NavigationStack {
+        TabView(
+            selection: $selectedTab
+        ) {
             
             
-            MealListView()
-                .navigationTitle("Recipe Finder")
+            // ===================================================
+            // Recipes Tab
+            // ===================================================
             
-            
-                .toolbar {
-                    
-                    
-                    ToolbarItem(
-                        placement: .topBarTrailing
-                    ) {
+            NavigationStack {
+                
+                
+                MealListView()
+                
+                
+                    .navigationTitle(
+                        "Recipe Finder"
+                    )
+                
+                
+                    .toolbar {
                         
                         
-                        Button("Logout") {
+                        ToolbarItem(
+                            placement:
+                                .topBarTrailing
+                        ) {
                             
-                            authViewModel.logout()
+                            
+                            Menu {
+                                
+                                
+                                Button {
+                                    
+                                    
+                                    authViewModel.logout()
+                                    
+                                    
+                                } label: {
+                                    
+                                    
+                                    Label(
+                                        "Logout",
+                                        systemImage:
+                                            "rectangle.portrait.and.arrow.right"
+                                    )
+                                }
+                                
+                                
+                            } label: {
+                                
+                                
+                                Image(
+                                    systemName:
+                                        "person.circle"
+                                )
+                            }
                         }
                     }
-                }
+            }
+            
+            .tabItem {
+                
+                
+                Image(
+                    systemName:
+                        "fork.knife"
+                )
+                
+                
+                Text(
+                    "Recipes"
+                )
+            }
+            
+            .tag(0)
+            
+            
+            
+            
+            // ===================================================
+            // Favorites Tab
+            // ===================================================
+            
+            NavigationStack {
+                
+                
+                FavoritesView()
+                
+                
+                    .navigationTitle(
+                        "Favorites"
+                    )
+            }
+            
+            .tabItem {
+                
+                
+                Image(
+                    systemName:
+                        "star.fill"
+                )
+                
+                
+                Text(
+                    "Favorites"
+                )
+            }
+            
+            .tag(1)
         }
     }
 }
@@ -54,5 +173,7 @@ struct HomeView: View {
     
     
     HomeView()
-        .environmentObject(AuthViewModel())
+        .environmentObject(
+            AuthViewModel()
+        )
 }

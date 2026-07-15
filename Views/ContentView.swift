@@ -6,15 +6,24 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Controls the main application flow.
-//  Shows Login/Register when user is logged out.
-//  Shows Recipe Finder when user is authenticated.
+//  Controls the main application navigation flow.
+//
+//  Decides which screen appears based on Firebase
+//  authentication status.
+//
+//  When user is logged out:
+//  → Shows Welcome/Login/Register screens.
+//
+//  When user is authenticated:
+//  → Shows the main Recipe Finder application.
 // ===========================================================
 //  Learning Outcomes:
 //  ✓ SwiftUI State Management
 //  ✓ Firebase Authentication Flow
 //  ✓ MVVM Pattern
 //  ✓ EnvironmentObject
+//  ✓ Session Persistence
+//  ✓ Conditional Navigation
 // ===========================================================
 
 
@@ -28,12 +37,19 @@ struct ContentView: View {
     // -------------------------------------------------------
     // Authentication ViewModel.
     //
-    // Tracks Firebase login state.
-    // Controls whether user sees:
-    // Login screen or Recipe application.
+    // Created once when the application starts.
+    //
+    // Stores:
+    // • Current Firebase user
+    // • Login state
+    // • Logout actions
+    //
+    // Shared with child views using EnvironmentObject.
     // -------------------------------------------------------
     
-    @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var authViewModel =
+    AuthViewModel()
+    
     
     
     
@@ -43,47 +59,69 @@ struct ContentView: View {
         Group {
             
             
+            // ===================================================
+            // Logged Out State
+            //
+            // If no Firebase user exists:
+            //
+            // Show Welcome screen where user can:
+            // • Login
+            // • Create account
+            //
+            // ===================================================
+            
             if authViewModel.user == nil {
                 
                 
-                // -------------------------------------------------------
-                // User is not logged in.
-                //
-                // Display authentication screen.
-                // -------------------------------------------------------
-                
                 NavigationStack {
                     
-                    LoginView()
+                    
+                    WelcomeView()
                 }
                 
                 
-            } else {
+            }
+            
+            
+            
+            
+            // ===================================================
+            // Logged In State
+            //
+            // If Firebase user exists:
+            //
+            // Open the main Recipe Finder application.
+            //
+            // ===================================================
+            
+            else {
                 
-                
-                // -------------------------------------------------------
-                // User is authenticated.
-                //
-                // Display main recipe application.
-                // -------------------------------------------------------
                 
                 HomeView()
             }
         }
         
         
+        
+        
         // -------------------------------------------------------
-        // Shares authentication state with child views.
+        // Share authentication state.
         //
-        // Available in:
-        // LoginView
-        // RegisterView
-        // HomeView
+        // Allows these views to access the same
+        // AuthViewModel instance:
+        //
+        // • LoginView
+        // • RegisterView
+        // • HomeView
+        //
         // -------------------------------------------------------
         
-        .environmentObject(authViewModel)
+        .environmentObject(
+            authViewModel
+        )
     }
 }
+
 
 
 

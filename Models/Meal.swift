@@ -7,45 +7,116 @@
 // ===========================================================
 //  Purpose:
 //  Represents a recipe object received from TheMealDB API.
-//  This model converts JSON data into Swift objects.
+//
+//  Converts JSON API response data into Swift objects.
+//  Used by the recipe list and recipe detail screens.
 // ===========================================================
 //  Learning Outcomes:
-//  ✓ Codable
+//  ✓ Codable Protocol
 //  ✓ JSON Decoding
 //  ✓ Swift Structures
 //  ✓ API Data Modeling
+//  ✓ Identifiable Protocol
 // ===========================================================
+
 
 import Foundation
 
 
-// Meal model represents one recipe.
+
+// ===========================================================
+//  Meal Model
+//
+//  Represents one recipe returned from TheMealDB API.
+// ===========================================================
+
+
 struct Meal: Identifiable, Codable {
     
-    // Unique identifier required by SwiftUI Lists.
+    
+    // -------------------------------------------------------
+    // Unique recipe ID from TheMealDB API.
+    //
+    // Used by SwiftUI List and NavigationLink.
+    // -------------------------------------------------------
+    
     let idMeal: String
     
+    
+    // -------------------------------------------------------
     // Recipe name.
+    //
+    // Example:
+    // Chicken Curry
+    // Pasta
+    // Dessert
+    // -------------------------------------------------------
+    
     let strMeal: String
     
+    
+    // -------------------------------------------------------
     // Recipe category.
+    //
+    // Example:
+    // Chicken
+    // Seafood
+    // Dessert
+    // -------------------------------------------------------
+    
     let strCategory: String?
     
+    
+    // -------------------------------------------------------
     // Recipe origin country.
+    //
+    // Example:
+    // Italian
+    // Canadian
+    // Mexican
+    // -------------------------------------------------------
+    
     let strArea: String?
     
-    // Recipe instructions.
+    
+    // -------------------------------------------------------
+    // Cooking instructions.
+    //
+    // Displayed in MealDetailView.
+    // -------------------------------------------------------
+    
     let strInstructions: String?
     
+    
+    // -------------------------------------------------------
     // Recipe image URL.
+    //
+    // Displayed using AsyncImage.
+    // -------------------------------------------------------
+    
     let strMealThumb: String?
     
-    // Recipe video URL (optional).
+    
+    // -------------------------------------------------------
+    // Optional YouTube recipe video link.
+    // -------------------------------------------------------
+    
     let strYoutube: String?
     
     
-    // Converts API ID into SwiftUI Identifiable ID.
+    
+    // -------------------------------------------------------
+    // Identifiable protocol requirement.
+    //
+    // Allows Meal to work with:
+    // • List
+    // • ForEach
+    // • NavigationLink
+    // -------------------------------------------------------
+    
     var id: String {
+        
+        
         idMeal
     }
 }

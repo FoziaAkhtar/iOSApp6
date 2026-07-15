@@ -27,6 +27,7 @@
 		A49736B03007EC6E00234ED5 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = A49736AF3007EC6E00234ED5 /* FirebaseFirestore */; };
 		A49736B13007ED5300234ED5 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736913007E10F00234ED5 /* AuthViewModel.swift */; };
 		A49736B23007EE4100234ED5 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736923007E12A00234ED5 /* LoginView.swift */; };
+		A49736B43008262B00234ED5 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736B33008262200234ED5 /* WelcomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		A497369D3007E1AE00234ED5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		A49736A03007E20300234ED5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		A49736A83007EBCF00234ED5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		A49736B33008262200234ED5 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -133,6 +135,7 @@
 		A49736863007DFE600234ED5 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A49736B33008262200234ED5 /* WelcomeView.swift */,
 				A49736873007E05C00234ED5 /* ContentView.swift */,
 				A49736923007E12A00234ED5 /* LoginView.swift */,
 				A49736933007E13C00234ED5 /* RegisterView.swift */,
@@ -238,6 +241,7 @@
 				A49736A13007E62500234ED5 /* MealViewModel.swift in Sources */,
 				A49736B23007EE4100234ED5 /* LoginView.swift in Sources */,
 				A497369C3007E19F00234ED5 /* FavoritesView.swift in Sources */,
+				A49736B43008262B00234ED5 /* WelcomeView.swift in Sources */,
 				A49736B13007ED5300234ED5 /* AuthViewModel.swift in Sources */,
 				A49736983007E15D00234ED5 /* MealListView.swift in Sources */,
 				A49736A33007E66800234ED5 /* MealResponse.swift in Sources */,

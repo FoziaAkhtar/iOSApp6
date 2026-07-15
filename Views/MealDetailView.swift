@@ -6,25 +6,53 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Displays detailed information for a selected recipe.
-//  Shows image, category, area, and cooking instructions.
+//  Displays complete recipe information.
+//
+//  Allows users to:
+//  • View recipe image
+//  • Read ingredients
+//  • Read cooking instructions
+//  • Save recipes to Favorites
 // ===========================================================
 //  Learning Outcomes:
-//  ✓ NavigationLink
-//  ✓ Passing Data Between Views
-//  ✓ AsyncImage
 //  ✓ SwiftUI Layout
+//  ✓ AsyncImage
+//  ✓ Navigation
+//  ✓ Firebase Firestore
+//  ✓ MVVM Pattern
 // ===========================================================
 
 
 import SwiftUI
 
 
+
 struct MealDetailView: View {
     
     
-    // Selected recipe passed from MealListView.
+    // -------------------------------------------------------
+    // Selected recipe received from MealListView.
+    // -------------------------------------------------------
+    
     let meal: Meal
+    
+    
+    // -------------------------------------------------------
+    // Controls favorite button state.
+    // -------------------------------------------------------
+    
+    @State private var isSaved = false
+    
+    
+    // -------------------------------------------------------
+    // Firestore service.
+    //
+    // Saves favorite recipes.
+    // -------------------------------------------------------
+    
+    private let firestoreService =
+    FirestoreService()
+    
     
     
     var body: some View {
@@ -33,78 +61,242 @@ struct MealDetailView: View {
         ScrollView {
             
             
-            VStack(alignment: .leading, spacing: 20) {
+            VStack(
+                alignment: .leading,
+                spacing: 20
+            ) {
                 
                 
-                // ------------------------------------------------
+                // ===================================================
                 // Recipe Image
-                // ------------------------------------------------
+                // ===================================================
                 
                 AsyncImage(
-                    url: URL(
-                        string: meal.strMealThumb ?? ""
-                    )
+                    url:
+                        URL(
+                            string:
+                                meal.strMealThumb ?? ""
+                        )
                 ) { image in
+                    
                     
                     image
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFill()
+                    
                     
                 } placeholder: {
                     
+                    
                     ProgressView()
                 }
-                .frame(height: 250)
-                .cornerRadius(15)
+                .frame(
+                    height: 250
+                )
+                .frame(
+                    maxWidth: .infinity
+                )
+                .clipShape(
+                    RoundedRectangle(
+                        cornerRadius: 20
+                    )
+                )
                 
                 
-                // ------------------------------------------------
-                // Recipe Name
-                // ------------------------------------------------
-                
-                Text(meal.strMeal)
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
                 
                 
-                // ------------------------------------------------
+                // ===================================================
                 // Recipe Information
-                // ------------------------------------------------
+                // ===================================================
                 
                 Text(
-                    "Category: \(meal.strCategory ?? "Unknown")"
+                    meal.strMeal
+                )
+                .font(
+                    .largeTitle
+                )
+                .bold()
+                
+                
+                HStack {
+                    
+                    
+                    Text(
+                        meal.strCategory ??
+                        "Unknown Category"
+                    )
+                    
+                    
+                    Spacer()
+                    
+                    
+                    Text(
+                        meal.strArea ??
+                        "Unknown Country"
+                    )
+                }
+                .font(
+                    .subheadline
+                )
+                .foregroundStyle(
+                    .secondary
                 )
                 
                 
-                Text(
-                    "Country: \(meal.strArea ?? "Unknown")"
+                
+                
+                // ===================================================
+                // Favorite Button
+                // ===================================================
+                
+                Button {
+                    
+                    
+                    saveFavorite()
+                    
+                    
+                } label: {
+                    
+                    
+                    Label(
+                        isSaved
+                        ? "Saved"
+                        : "Add To Favorites",
+                        
+                        systemImage:
+                            isSaved
+                        ? "star.fill"
+                        : "star"
+                    )
+                    .frame(
+                        maxWidth: .infinity
+                    )
+                }
+                .buttonStyle(
+                    .borderedProminent
                 )
+                
+                
                 
                 
                 Divider()
                 
                 
-                // ------------------------------------------------
-                // Instructions
-                // ------------------------------------------------
                 
-                Text("Cooking Instructions")
-                    .font(.title2)
-                    .fontWeight(.bold)
+                
+                // ===================================================
+                // Instructions Section
+                // ===================================================
+                
+                Text(
+                    "Instructions"
+                )
+                .font(
+                    .title2
+                )
+                .bold()
                 
                 
                 Text(
                     meal.strInstructions ??
                     "No instructions available."
                 )
-                .lineSpacing(5)
+                .font(
+                    .body
+                )
                 
                 
+                
+                
+                Divider()
+                
+                
+                
+                
+                // ===================================================
+                // YouTube Section
+                // ===================================================
+                
+                if let youtube =
+                    meal.strYoutube,
+                   !youtube.isEmpty {
+                    
+                    
+                    Link(
+                        destination:
+                            URL(
+                                string:
+                                    youtube
+                            )!
+                    ) {
+                        
+                        
+                        Label(
+                            "Watch Video",
+                            systemImage:
+                                "play.rectangle.fill"
+                        )
+                    }
+                }
             }
             .padding()
         }
-        .navigationTitle("Recipe Details")
-        .navigationBarTitleDisplayMode(.inline)
+        .navigationTitle(
+            "Recipe Details"
+        )
+        .navigationBarTitleDisplayMode(
+            .inline
+        )
+    }
+    
+    
+    
+    // =======================================================
+    // Save Favorite Recipe
+    //
+    // Sends recipe data to Firestore.
+    // =======================================================
+    
+    private func saveFavorite() {
+        
+        
+        Task {
+            
+            
+            do {
+                
+                
+                let favorite =
+                FavoriteMeal(
+                    id:
+                        meal.idMeal,
+                    
+                    name:
+                        meal.strMeal,
+                    
+                    image:
+                        meal.strMealThumb ?? ""
+                )
+                
+                
+                try await firestoreService
+                    .addFavorite(
+                        favorite
+                    )
+                
+                
+                isSaved = true
+                
+                
+            } catch {
+                
+                
+                print(
+                    "Favorite Error:",
+                    error.localizedDescription
+                )
+            }
+        }
     }
 }
 
@@ -116,18 +308,8 @@ struct MealDetailView: View {
     NavigationStack {
         
         
-        MealDetailView(
-            meal: Meal(
-                idMeal: "1",
-                strMeal: "Chicken Curry",
-                strCategory: "Dinner",
-                strArea: "Indian",
-                strInstructions:
-                    "Prepare ingredients and cook until ready.",
-                strMealThumb:
-                    "https://www.themealdb.com/images/media/meals/1529444830.jpg",
-                strYoutube: nil
-            )
+        Text(
+            "Recipe Preview"
         )
     }
 }

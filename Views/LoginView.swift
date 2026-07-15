@@ -6,14 +6,15 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Provides user login interface using Firebase Authentication.
+//  Provides user login screen.
+//  Authenticates users using Firebase Authentication.
 // ===========================================================
 //  Learning Outcomes:
 //  ✓ SwiftUI Forms
-//  ✓ TextField
-//  ✓ SecureField
-//  ✓ State Management
 //  ✓ Firebase Authentication
+//  ✓ EnvironmentObject
+//  ✓ MVVM Pattern
+//  ✓ Error Handling
 // ===========================================================
 
 
@@ -24,17 +25,22 @@ import SwiftUI
 struct LoginView: View {
     
     
-    // Shared authentication ViewModel.
+    // -------------------------------------------------------
+    // Authentication ViewModel.
+    //
+    // Shared from ContentView.
+    // -------------------------------------------------------
+    
     @EnvironmentObject var authViewModel: AuthViewModel
     
     
+    // -------------------------------------------------------
     // User input fields.
-    @State private var email = ""
-    @State private var password = ""
+    // -------------------------------------------------------
     
+    @State private var email: String = ""
     
-    // Controls registration navigation.
-    @State private var showRegister = false
+    @State private var password: String = ""
     
     
     
@@ -47,18 +53,37 @@ struct LoginView: View {
             VStack(spacing: 20) {
                 
                 
-                Text("Recipe Finder")
-                    .font(.largeTitle)
-                    .bold()
+                // -------------------------------------------------------
+                // App Title
+                // -------------------------------------------------------
                 
+                Text(
+                    "Recipe Finder"
+                )
+                .font(.largeTitle)
+                .bold()
+                
+                
+                
+                // -------------------------------------------------------
+                // Email Field
+                // -------------------------------------------------------
                 
                 TextField(
                     "Email",
                     text: $email
                 )
                 .textFieldStyle(.roundedBorder)
-                .keyboardType(.emailAddress)
+                .keyboardType(
+                    .emailAddress
+                )
+                .autocorrectionDisabled()
                 
+                
+                
+                // -------------------------------------------------------
+                // Password Field
+                // -------------------------------------------------------
                 
                 SecureField(
                     "Password",
@@ -68,58 +93,81 @@ struct LoginView: View {
                 
                 
                 
-                if !authViewModel.errorMessage.isEmpty {
-                    
-                    Text(authViewModel.errorMessage)
-                        .foregroundStyle(.red)
-                        .multilineTextAlignment(.center)
-                }
-                
-                
+                // -------------------------------------------------------
+                // Login Button
+                // -------------------------------------------------------
                 
                 Button {
+                    
                     
                     authViewModel.login(
                         email: email,
                         password: password
                     )
                     
+                    
                 } label: {
+                    
                     
                     if authViewModel.isLoading {
                         
+                        
                         ProgressView()
+                        
                         
                     } else {
                         
-                        Text("Login")
+                        
+                        Text(
+                            "Login"
+                        )
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(
+                    .borderedProminent
+                )
                 
                 
                 
-                Button {
+                // -------------------------------------------------------
+                // Error Message
+                // -------------------------------------------------------
+                
+                if !authViewModel.errorMessage.isEmpty {
                     
-                    showRegister = true
+                    
+                    Text(
+                        authViewModel.errorMessage
+                    )
+                    .foregroundColor(.red)
+                }
+                
+                
+                
+                // -------------------------------------------------------
+                // Register Navigation
+                // -------------------------------------------------------
+                
+                NavigationLink {
+                    
+                    
+                    RegisterView()
+                    
                     
                 } label: {
                     
-                    Text("Create Account")
+                    
+                    Text(
+                        "Create Account"
+                    )
                 }
                 
                 
             }
             .padding()
-            .navigationTitle("Login")
-            
-            
-            .navigationDestination(
-                isPresented: $showRegister
-            ) {
-                
-                RegisterView()
-            }
+            .navigationTitle(
+                "Login"
+            )
         }
     }
 }
@@ -130,5 +178,7 @@ struct LoginView: View {
     
     
     LoginView()
-        .environmentObject(AuthViewModel())
+        .environmentObject(
+            AuthViewModel()
+        )
 }
