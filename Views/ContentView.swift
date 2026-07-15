@@ -6,59 +6,89 @@
 //  Created by Fozia Akhtar
 // ===========================================================
 //  Purpose:
-//  Initial entry screen for Recipe Finder.
-//  This view will later control authentication flow.
+//  Controls the main application flow.
+//  Shows Login/Register when user is logged out.
+//  Shows Recipe Finder when user is authenticated.
 // ===========================================================
 //  Learning Outcomes:
-//  ✓ SwiftUI View Structure
-//  ✓ Navigation Preparation
+//  ✓ SwiftUI State Management
+//  ✓ Firebase Authentication Flow
+//  ✓ MVVM Pattern
+//  ✓ EnvironmentObject
 // ===========================================================
 
 
 import SwiftUI
 
 
+
 struct ContentView: View {
+    
+    
+    // -------------------------------------------------------
+    // Authentication ViewModel.
+    //
+    // Tracks Firebase login state.
+    // Controls whether user sees:
+    // Login screen or Recipe application.
+    // -------------------------------------------------------
+    
+    @StateObject private var authViewModel = AuthViewModel()
+    
+    
     
     var body: some View {
         
-        NavigationStack {
+        
+        Group {
             
-            VStack(spacing: 20) {
-                
-                Image(systemName: "fork.knife.circle.fill")
-                    .font(.system(size: 80))
-                    .foregroundStyle(.orange)
+            
+            if authViewModel.user == nil {
                 
                 
-                Text("Recipe Finder")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                // -------------------------------------------------------
+                // User is not logged in.
+                //
+                // Display authentication screen.
+                // -------------------------------------------------------
                 
-                
-                Text("Discover delicious recipes from around the world")
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
-                
-                
-                NavigationLink {
-                    MealListView()
-                } label: {
-                    Text("Browse Recipes")
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(.orange)
-                        .foregroundColor(.white)
-                        .cornerRadius(12)
+                NavigationStack {
+                    
+                    LoginView()
                 }
+                
+                
+            } else {
+                
+                
+                // -------------------------------------------------------
+                // User is authenticated.
+                //
+                // Display main recipe application.
+                // -------------------------------------------------------
+                
+                HomeView()
             }
-            .padding()
         }
+        
+        
+        // -------------------------------------------------------
+        // Shares authentication state with child views.
+        //
+        // Available in:
+        // LoginView
+        // RegisterView
+        // HomeView
+        // -------------------------------------------------------
+        
+        .environmentObject(authViewModel)
     }
 }
 
 
+
 #Preview {
+    
+    
     ContentView()
 }
