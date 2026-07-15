@@ -6,8 +6,34 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		A49736893007E06400234ED5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736873007E05C00234ED5 /* ContentView.swift */; };
+		A49736943007E14400234ED5 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736933007E13C00234ED5 /* RegisterView.swift */; };
+		A49736963007E15000234ED5 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736953007E14A00234ED5 /* HomeView.swift */; };
+		A49736983007E15D00234ED5 /* MealListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736973007E15400234ED5 /* MealListView.swift */; };
+		A497369A3007E18500234ED5 /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736993007E17B00234ED5 /* MealDetailView.swift */; };
+		A497369C3007E19F00234ED5 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497369B3007E19400234ED5 /* FavoritesView.swift */; };
+		A497369E3007E1B900234ED5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497369D3007E1AE00234ED5 /* ProfileView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		A49736703007DEE400234ED5 /* iOSApp6.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp6.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A49736873007E05C00234ED5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A497368A3007E08100234ED5 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
+		A497368B3007E08D00234ED5 /* MealResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealResponse.swift; sourceTree = "<group>"; };
+		A497368C3007E09C00234ED5 /* FavoriteMeal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteMeal.swift; sourceTree = "<group>"; };
+		A497368D3007E0BA00234ED5 /* MealService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealService.swift; sourceTree = "<group>"; };
+		A497368F3007E0DF00234ED5 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		A49736903007E0FD00234ED5 /* MealViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealViewModel.swift; sourceTree = "<group>"; };
+		A49736913007E10F00234ED5 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		A49736923007E12A00234ED5 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A49736933007E13C00234ED5 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		A49736953007E14A00234ED5 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A49736973007E15400234ED5 /* MealListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealListView.swift; sourceTree = "<group>"; };
+		A49736993007E17B00234ED5 /* MealDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealDetailView.swift; sourceTree = "<group>"; };
+		A497369B3007E19400234ED5 /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
+		A497369D3007E1AE00234ED5 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A49736A03007E20300234ED5 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +58,11 @@
 		A49736673007DEE400234ED5 = {
 			isa = PBXGroup;
 			children = (
+				A497367E3007DEEF00234ED5 /* Models */,
+				A497367F3007DEFB00234ED5 /* Services */,
+				A49736843007DF7E00234ED5 /* ViewModels */,
+				A49736863007DFE600234ED5 /* Views */,
+				A49736823007DF1E00234ED5 /* Resources */,
 				A49736723007DEE400234ED5 /* iOSApp6 */,
 				A49736713007DEE400234ED5 /* Products */,
 			);
@@ -43,6 +74,57 @@
 				A49736703007DEE400234ED5 /* iOSApp6.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A497367E3007DEEF00234ED5 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A497368A3007E08100234ED5 /* Meal.swift */,
+				A497368B3007E08D00234ED5 /* MealResponse.swift */,
+				A497368C3007E09C00234ED5 /* FavoriteMeal.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A497367F3007DEFB00234ED5 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A497368D3007E0BA00234ED5 /* MealService.swift */,
+				A49736A03007E20300234ED5 /* AuthService.swift */,
+				A497368F3007E0DF00234ED5 /* FirestoreService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A49736823007DF1E00234ED5 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A49736843007DF7E00234ED5 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A49736903007E0FD00234ED5 /* MealViewModel.swift */,
+				A49736913007E10F00234ED5 /* AuthViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		A49736863007DFE600234ED5 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A49736873007E05C00234ED5 /* ContentView.swift */,
+				A49736923007E12A00234ED5 /* LoginView.swift */,
+				A49736933007E13C00234ED5 /* RegisterView.swift */,
+				A49736953007E14A00234ED5 /* HomeView.swift */,
+				A49736973007E15400234ED5 /* MealListView.swift */,
+				A49736993007E17B00234ED5 /* MealDetailView.swift */,
+				A497369B3007E19400234ED5 /* FavoritesView.swift */,
+				A497369D3007E1AE00234ED5 /* ProfileView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +201,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A497369E3007E1B900234ED5 /* ProfileView.swift in Sources */,
+				A497369A3007E18500234ED5 /* MealDetailView.swift in Sources */,
+				A49736943007E14400234ED5 /* RegisterView.swift in Sources */,
+				A49736963007E15000234ED5 /* HomeView.swift in Sources */,
+				A49736893007E06400234ED5 /* ContentView.swift in Sources */,
+				A497369C3007E19F00234ED5 /* FavoritesView.swift in Sources */,
+				A49736983007E15D00234ED5 /* MealListView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
