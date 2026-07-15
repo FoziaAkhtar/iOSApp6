@@ -139,7 +139,16 @@ struct MealListView: View {
             }
         }
         .navigationTitle("Recipes")
-        
+
+        .searchable(
+            text: $viewModel.searchText,
+            prompt: "Search recipes"
+        )
+
+        .onSubmit(of: .search) {
+            
+            viewModel.searchMeals()
+        }
         
         // ----------------------------------------------------
         // Load recipes automatically when screen appears.
