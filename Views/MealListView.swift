@@ -7,15 +7,17 @@
 // ===========================================================
 //  Purpose:
 //  Displays recipes retrieved from TheMealDB API.
-//  Uses MealViewModel to manage API data and UI states.
+//  Connects MealViewModel with SwiftUI interface.
+//  Allows users to select a recipe and view details.
 // ===========================================================
 //  Learning Outcomes:
-//  ✓ SwiftUI Lists
 //  ✓ MVVM Architecture
 //  ✓ @StateObject
-//  ✓ Async API Data Display
-//  ✓ Loading and Error Handling
-//  ✓ Navigation Preparation
+//  ✓ API Data Display
+//  ✓ NavigationLink
+//  ✓ Loading State
+//  ✓ Error Handling
+//  ✓ Pull To Refresh
 // ===========================================================
 
 
@@ -26,8 +28,7 @@ struct MealListView: View {
     
     
     // -------------------------------------------------------
-    // ViewModel manages recipe data.
-    // @StateObject keeps the ViewModel alive while the view exists.
+    // ViewModel manages recipe data and API communication.
     // -------------------------------------------------------
     
     @StateObject private var viewModel = MealViewModel()
@@ -41,7 +42,7 @@ struct MealListView: View {
             
             
             // ------------------------------------------------
-            // Display loading indicator while API request runs.
+            // Loading State
             // ------------------------------------------------
             
             if viewModel.isLoading {
@@ -55,7 +56,7 @@ struct MealListView: View {
             
             
             // ------------------------------------------------
-            // Display error message if API fails.
+            // Error State
             // ------------------------------------------------
             
             else if !viewModel.errorMessage.isEmpty {
@@ -63,12 +64,20 @@ struct MealListView: View {
                 
                 VStack(spacing: 15) {
                     
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.largeTitle)
+                    
+                    Image(systemName:
+                            "exclamationmark.triangle.fill")
+                    .font(.largeTitle)
                     
                     
                     Text(viewModel.errorMessage)
                         .multilineTextAlignment(.center)
+                    
+                    
+                    Button("Try Again") {
+                        
+                        viewModel.fetchMeals()
+                    }
                     
                 }
                 .padding()
@@ -78,7 +87,7 @@ struct MealListView: View {
             
             
             // ------------------------------------------------
-            // Display recipes from API.
+            // Recipe List
             // ------------------------------------------------
             
             else {
@@ -89,13 +98,14 @@ struct MealListView: View {
                     
                     NavigationLink {
                         
-                        // Detail screen will be connected next.
-                        Text(meal.strMeal)
+                        // Opens recipe detail screen.
+                        MealDetailView(meal: meal)
+                        
                         
                     } label: {
                         
                         
-                        VStack(alignment: .leading, spacing: 5) {
+                        VStack(alignment: .leading, spacing: 6) {
                             
                             
                             Text(meal.strMeal)
@@ -103,24 +113,27 @@ struct MealListView: View {
                             
                             
                             Text(
-                                meal.strCategory ?? "Unknown Category"
+                                meal.strCategory ??
+                                "Unknown Category"
                             )
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                             
                             
                             Text(
-                                meal.strArea ?? "Unknown Country"
+                                meal.strArea ??
+                                "Unknown Country"
                             )
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                            
                             
                         }
                     }
                 }
                 .refreshable {
                     
-                    // Reload recipes when user pulls down.
+                    // Refresh recipe list.
                     viewModel.fetchMeals()
                 }
             }
@@ -129,7 +142,7 @@ struct MealListView: View {
         
         
         // ----------------------------------------------------
-        // Automatically load recipes when screen appears.
+        // Load recipes automatically when screen appears.
         // ----------------------------------------------------
         
         .task {
@@ -142,6 +155,7 @@ struct MealListView: View {
 
 
 #Preview {
+    
     
     NavigationStack {
         
