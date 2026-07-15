@@ -14,6 +14,13 @@
 		A497369A3007E18500234ED5 /* MealDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736993007E17B00234ED5 /* MealDetailView.swift */; };
 		A497369C3007E19F00234ED5 /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497369B3007E19400234ED5 /* FavoritesView.swift */; };
 		A497369E3007E1B900234ED5 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497369D3007E1AE00234ED5 /* ProfileView.swift */; };
+		A49736A13007E62500234ED5 /* MealViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736903007E0FD00234ED5 /* MealViewModel.swift */; };
+		A49736A23007E66300234ED5 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497368A3007E08100234ED5 /* Meal.swift */; };
+		A49736A33007E66800234ED5 /* MealResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497368B3007E08D00234ED5 /* MealResponse.swift */; };
+		A49736A43007E66D00234ED5 /* FavoriteMeal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497368C3007E09C00234ED5 /* FavoriteMeal.swift */; };
+		A49736A53007E67100234ED5 /* MealService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497368D3007E0BA00234ED5 /* MealService.swift */; };
+		A49736A63007E67600234ED5 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49736A03007E20300234ED5 /* AuthService.swift */; };
+		A49736A73007E67C00234ED5 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A497368F3007E0DF00234ED5 /* FirestoreService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -201,13 +208,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A49736A53007E67100234ED5 /* MealService.swift in Sources */,
+				A49736A73007E67C00234ED5 /* FirestoreService.swift in Sources */,
+				A49736A43007E66D00234ED5 /* FavoriteMeal.swift in Sources */,
+				A49736A23007E66300234ED5 /* Meal.swift in Sources */,
 				A497369E3007E1B900234ED5 /* ProfileView.swift in Sources */,
 				A497369A3007E18500234ED5 /* MealDetailView.swift in Sources */,
 				A49736943007E14400234ED5 /* RegisterView.swift in Sources */,
 				A49736963007E15000234ED5 /* HomeView.swift in Sources */,
 				A49736893007E06400234ED5 /* ContentView.swift in Sources */,
+				A49736A13007E62500234ED5 /* MealViewModel.swift in Sources */,
 				A497369C3007E19F00234ED5 /* FavoritesView.swift in Sources */,
 				A49736983007E15D00234ED5 /* MealListView.swift in Sources */,
+				A49736A33007E66800234ED5 /* MealResponse.swift in Sources */,
+				A49736A63007E67600234ED5 /* AuthService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
